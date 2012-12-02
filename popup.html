@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<link rel="stylesheet" href="css/bootstrap.css"/>
+	<style type="text/css">
+		body {
+			min-width: 320px;
+		}
+		tr.done {
+			text-decoration: line-through;
+		}
+		#button-new {
+			position: relative;
+		}
+		#text-new {
+			position: absolute;
+			top: -30px;
+			left: 0px;
+			display: none;
+		}
+	</style>
+</head>
+<body>
+	<table class="table table-striped" id="tbl-notes">
+		<tr>
+			<th>#</th>
+			<th>Date</th>
+			<th>Notes</th>
+		</tr>
+		<tr>
+			<td>1</td>
+			<td>17/05/1990</td>
+			<td>Đi thực tập</td>
+		</tr>
+		<tr>
+			<td>2</td>
+			<td>17/05/1990</td>
+			<td>Đi bơi, đi đá bóng, đánh cầu lông, bóng bàn, quay tay</td>
+		</tr>
+	</table>	 
+	<a class="btn btn-block" href="#" id="button-new"><i class="icon-pencil"></i>New
+		<input type="text" id="text-new" placeholder="Type something…">
+	</a>
+		
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.js"></script>
+	<script type="text/javascript" src="js/localstoragedb.min.js"></script>
+	<script type="text/javascript" src="js/script.js"></script>
+</body>
+</html>
