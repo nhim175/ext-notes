@@ -6,11 +6,11 @@ if(lib.isNew()) {
 	lib.insert("notes", {id: 1, date: "11/1/1990", notes: "Hello world!", status: 1} );
 	lib.insert("notes", {id: 2, date: "11/1/1990", notes: "Notes Demo!", status: 0} );
 	lib.commit();
-	lib.createTable("counter", ["number"]);
-	lib.insert("counter", {number: 2});
+	lib.createTable("attributes", ["key", "value"]);
+	lib.insert("attributes", {key: "counter", value: 2});
 	lib.commit();
 }
-var id=lib.query("counter")[0].number;
+var id=lib.query("attributes", {key: "counter"})[0].value;
 //Init table
 
 var arrNotes = lib.query("notes");
@@ -71,7 +71,10 @@ $("#text-new").keypress(function(e) {
 		var fullDate = date.getDate()+"/"+(date.getMonth()+1)+"/"+(date.getYear()+1900);
 		$("#tbl-notes").append("<tr class='row-note'><td>"+(++id)+"</td><td>"+fullDate+"</td><td>"+notes+"</td></tr>");
 		lib.insert("notes", {id: id, date: fullDate, notes: notes, status: 0});
-		lib.insert("counter", {number: id});
+		lib.update("attributes", {key: "counter"}, function(row) {
+			row.value = id;
+			return row;
+		});
 		lib.commit();
 		$(this).val("");
 		$(this).hide();
