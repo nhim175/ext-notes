@@ -1,5 +1,6 @@
 var lib = new localStorageDB("library", localStorage);
-if(lib.isNew()) {
+//Create database
+/*if(lib.isNew()) {
 	lib.createTable("notes",["id", "date", "notes"]);
 	lib.insert("notes", {id: 1, date: "11/1/1990", notes: "Hello world!"} );
 	lib.insert("notes", {id: 2, date: "11/1/1990", notes: "Notes Demo!"} );
@@ -7,9 +8,24 @@ if(lib.isNew()) {
 	lib.createTable("counter", ["number"]);
 	lib.insert("counter", {number: 2});
 	lib.commit();
+}*/
+var id=lib.query("counter")[0].number;
+//Init table
+
+var arrNotes = lib.query("notes");
+var notes = arrNotes.length;
+
+for(var i=0; i<notes; i++) {
+	var row = "<tr>";
+	row += "<td>"+arrNotes[i].id+"</td>";
+	row += "<td>"+arrNotes[i].date+"</td>";
+	row += "<td>"+arrNotes[i].notes+"</td>";
+	row += "</tr>";
+	$("#tbl-notes").append(row);
 }
-var id=10;
-var date = "11/1/2011";
+
+
+
 $("tr").on("click", function() {
 	$(this).toggleClass("done");
 });
