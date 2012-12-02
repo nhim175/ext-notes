@@ -45,7 +45,7 @@ $("tr.row-note").on("click", function() {
 	lib.commit();
 });
 
-$("tr").on("dblclick", function() {
+$("tr.row-note").on("dblclick", function() {
 	$(this).stop().fadeOut("slow", function() {
 		$(this).remove();
 	});
