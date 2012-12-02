@@ -49,6 +49,9 @@ $("tr").on("dblclick", function() {
 	$(this).stop().fadeOut("slow", function() {
 		$(this).remove();
 	});
+	var id = $(this).children("td")[0].innerHTML;
+	lib.deleteRows("notes", {id: id});
+	lib.commit();
 });
 $("a[href='#']").on("click", function(e) {
 	e.preventDefault();
