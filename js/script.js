@@ -1,14 +1,15 @@
+
 var lib = new localStorageDB("library", localStorage);
 //Create database
-/*if(lib.isNew()) {
-	lib.createTable("notes",["id", "date", "notes"]);
-	lib.insert("notes", {id: 1, date: "11/1/1990", notes: "Hello world!"} );
-	lib.insert("notes", {id: 2, date: "11/1/1990", notes: "Notes Demo!"} );
+if(lib.isNew()) {
+	lib.createTable("notes",["id", "date", "notes", "status"]);
+	lib.insert("notes", {id: 1, date: "11/1/1990", notes: "Hello world!", status: 1} );
+	lib.insert("notes", {id: 2, date: "11/1/1990", notes: "Notes Demo!", status: 0} );
 	lib.commit();
 	lib.createTable("counter", ["number"]);
 	lib.insert("counter", {number: 2});
 	lib.commit();
-}*/
+}
 var id=lib.query("counter")[0].number;
 //Init table
 
@@ -16,7 +17,11 @@ var arrNotes = lib.query("notes");
 var notes = arrNotes.length;
 
 for(var i=0; i<notes; i++) {
-	var row = "<tr>";
+	var row = "<tr class='row-note";
+	if(arrNotes[i].status==1) {
+		row += " done";
+	}
+	row += "'>";
 	row += "<td>"+arrNotes[i].id+"</td>";
 	row += "<td>"+arrNotes[i].date+"</td>";
 	row += "<td>"+arrNotes[i].notes+"</td>";
@@ -26,9 +31,20 @@ for(var i=0; i<notes; i++) {
 
 
 
-$("tr").on("click", function() {
+$("tr.row-note").on("click", function() {
 	$(this).toggleClass("done");
+	var id = $(this).children("td")[0].innerHTML;
+	lib.update("notes", {id: id}, function(row) {
+		if(row.status!=1) {
+			row.status = 1;
+		} else {
+			row.status = 0;
+		}
+		return row;
+	});
+	lib.commit();
 });
+
 $("tr").on("dblclick", function() {
 	$(this).stop().fadeOut("slow", function() {
 		$(this).remove();
@@ -49,7 +65,11 @@ $("#text-new").keypress(function(e) {
 	if(e.keyCode==13) {
 		var date = new Date();
 		var notes = $(this).val();
-		$("#tbl-notes").append("<tr><td>"+(++id)+"</td><td>"+date.getDate()+"/"+(date.getMonth()+1)+"/"+(date.getYear()+1900)+"</td><td>"+notes+"</td></tr>");
+		var fullDate = date.getDate()+"/"+(date.getMonth()+1)+"/"+(date.getYear()+1900);
+		$("#tbl-notes").append("<tr class='row-note'><td>"+(++id)+"</td><td>"+fullDate+"</td><td>"+notes+"</td></tr>");
+		lib.insert("notes", {id: id, date: fullDate, notes: notes, status: 0});
+		lib.insert("counter", {number: id});
+		lib.commit();
 		$(this).val("");
 		$(this).hide();
 	}
