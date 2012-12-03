@@ -6,6 +6,7 @@
 	<style type="text/css">
 		body {
 			min-width: 320px;
+			font-size: 0.8em;
 		}
 		tr.done {
 			text-decoration: line-through;
@@ -19,17 +20,26 @@
 			left: 0px;
 			display: none;
 		}
+		div.table-row {
+			padding-left: 20px;
+		}
+		tr.heading {
+		}
 	</style>
 </head>
 <body>
-	<table class="table table-striped" id="tbl-notes">
-		<tr>
-			<th>#</th>
-			<th>Date</th>
-			<th>Notes</th>
-		</tr>
-	</table>	 
-	<a class="btn btn-block" href="#" id="button-new"><i class="icon-pencil"></i>New
+	<div class="row table-row">
+		<table class="table table-striped" id="tbl-notes">
+		</table>	 
+	</div>
+	<div class="pagination pagination-centered pagination-mini">
+	  <ul>
+		<li class="prev"><a href="#">Prev</a></li>
+		<li class="next"><a href="#">Next</a></li>
+	  </ul>
+	</div>
+
+	<a class="btn btn-block" href="#" id="button-new"><i class="icon-pencil"></i>
 		<input type="text" id="text-new" placeholder="Type something…">
 	</a>
 		
