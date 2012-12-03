@@ -3,7 +3,7 @@ var itemPerPage = 5;	//Số item 1 trang
 var curPage = 1; //Trang hiện tại
 var totalItem;
 var totalPage;
-//Phân trang
+//Cập nhật trạng thái các button prev và next
 function buttonStatus() {
 	if (curPage==1) {
 		$("li.prev").addClass("disabled");		
@@ -29,19 +29,22 @@ if(lib.isNew()) {
 var id=lib.query("attributes", {key: "counter"})[0].value;
 //Init table
 
+
+//Hàm update table 
 function showItems(page, itemPerPage) {
 	totalItem = lib.query("notes").length;	//Tổng số item
 	totalPage = Math.ceil(totalItem/itemPerPage); //Tổng số trang
-	$("#tbl-notes").html("");
+	$("#tbl-notes").html("");	//Xóa nội dung bảng
+	//Thêm heading row
 	$("#tbl-notes").append("<tr class='heading'>\
 								<th>#</th>\
 								<th>Date</th>\
 								<th>Notes</th>\
 							</tr>");
-	var arrNotes = lib.query("notes").reverse();
-	var notes = arrNotes.length;
-	var start = (page-1)*itemPerPage;
-	var end;
+	var arrNotes = lib.query("notes").reverse();	//Đảo thứ tự cho notes mới nhất lên đầu
+	var notes = arrNotes.length;	//Đếm số notes	
+	var start = (page-1)*itemPerPage;	//Số thứ tự của notes đầu tiên trong trang hiện tại
+	var end;	//Số thứ tự notes cuối cùng 
 	if((start+5)>(totalItem-1)) {
 		end = totalItem;
 	} else {
@@ -62,6 +65,8 @@ function showItems(page, itemPerPage) {
 	buttonStatus();
 }
 showItems(curPage, itemPerPage);
+
+//2 nút phân trang 
 $("li.next").on("click", function() {
 	if($(this).hasClass("disabled")) {
 		return false;
@@ -69,6 +74,7 @@ $("li.next").on("click", function() {
 	curPage++;
 	showItems(curPage, itemPerPage);
 });
+
 $("li.prev").on("click", function() {
 	if($(this).hasClass("disabled")) {
 		return false;
@@ -76,6 +82,8 @@ $("li.prev").on("click", function() {
 	curPage--;
 	showItems(curPage, itemPerPage);
 });
+
+//Click để đánh dấu notes đã xong 
 $("tr.row-note").live("click", function() {
 	$(this).toggleClass("done");
 	var id = $(this).children("td")[0].innerHTML;
@@ -89,7 +97,7 @@ $("tr.row-note").live("click", function() {
 	});
 	lib.commit();
 });
-
+//Double click để xóa notes 
 $("tr.row-note").live("dblclick", function() {
 	var r=confirm("Confirm Delete?");
 	if(r==false) {
@@ -104,17 +112,25 @@ $("tr.row-note").live("dblclick", function() {
 		showItems(curPage, itemPerPage);
 	});
 });
+
+//Click vào a# thì ko làm j` cả
 $("a[href='#']").on("click", function(e) {
 	e.preventDefault();
 });
+
+//Ấn nút viết mới
 $("#button-new").on("click", function() {
 	$("#text-new").show("slow", function() {
 		$(this).focus();
 	});
 });
+
+//Khi ko focus vào input nữa thì ẩn nó đi
 $("#text-new").on("blur", function() {
 	$(this).fadeOut("slow");
 });
+
+//Enter để nhập
 $("#text-new").keypress(function(e) {
 	if(e.keyCode==13) {
 		var date = new Date();
