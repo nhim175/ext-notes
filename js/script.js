@@ -5,12 +5,15 @@ var totalItem;
 var totalPage;
 //Cập nhật trạng thái các button prev và next
 function buttonStatus() {
-	if (curPage==1) {
+	if (curPage==1&&totalPage>1) {
 		$("li.prev").addClass("disabled");		
 		$("li.next").removeClass("disabled");
-	} else if (curPage==totalPage) {
+	} else if (curPage==totalPage&&totalPage>1) {
 		$("li.next").addClass("disabled");
 		$("li.prev").removeClass("disabled");
+	} else if (curPage==totalPage&&totalPage==1) {
+		$("li.prev").addClass("disabled");
+		$("li.next").addClass("disabled");
 	} else {
 		$("li.prev").removeClass("disabled");
 		$("li.next").removeClass("disabled");
@@ -99,10 +102,10 @@ $("tr.row-note").live("click", function() {
 });
 //Double click để xóa notes 
 $("tr.row-note").live("dblclick", function() {
-	var r=confirm("Confirm Delete?");
+	/*var r=confirm("Confirm Delete?");
 	if(r==false) {
 		return false;
-	}
+	}*/
 	
 	var id = $(this).children("td")[0].innerHTML;
 	lib.deleteRows("notes", {id: id});
