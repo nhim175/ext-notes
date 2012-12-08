@@ -1,5 +1,5 @@
 var lib = new localStorageDB("library", localStorage);
-var itemPerPage = 5;	//Số item 1 trang
+var itemPerPage = 10;	//Số item 1 trang
 var curPage = 1; //Trang hiện tại
 var totalItem;
 var totalPage;
@@ -48,10 +48,10 @@ function showItems(page, itemPerPage) {
 	var notes = arrNotes.length;	//Đếm số notes	
 	var start = (page-1)*itemPerPage;	//Số thứ tự của notes đầu tiên trong trang hiện tại
 	var end;	//Số thứ tự notes cuối cùng 
-	if((start+5)>(totalItem-1)) {
+	if((start+itemPerPage)>(totalItem-1)) {
 		end = totalItem;
 	} else {
-		end = start+5;
+		end = start+itemPerPage;
 	}
 	for(var i=start; i<end; i++) {
 		var row = "<tr class='row-note";
@@ -63,7 +63,7 @@ function showItems(page, itemPerPage) {
 		row += "<td>"+arrNotes[i].date+"</td>";
 		row += "<td>"+arrNotes[i].notes+"</td>";
 		row += "</tr>";
-		$("#tbl-notes").append(row);
+		$("#tbl-notes").append(row).hide().fadeIn("slow");
 	}
 	buttonStatus();
 }
@@ -123,18 +123,25 @@ $("a[href='#']").on("click", function(e) {
 
 //Ấn nút viết mới
 $("#button-new").on("click", function() {
-	$("#text-new").show("slow", function() {
-		$(this).focus();
+	$("#new-input").fadeIn("slow", function() {
+		$("textarea").focus();
 	});
 });
+$("#input-close-btn").on("click", function() {
+    $("#new-input").fadeOut("slow");
+})
+
 
 //Khi ko focus vào input nữa thì ẩn nó đi
+/*
 $("#text-new").on("blur", function() {
 	$(this).fadeOut("slow");
 });
+*/
+
 
 //Enter để nhập
-$("#text-new").keypress(function(e) {
+$("textarea").keypress(function(e) {
 	if(e.keyCode==13) {
 		var date = new Date();
 		var notes = $(this).val();
@@ -148,7 +155,8 @@ $("#text-new").keypress(function(e) {
 		});
 		lib.commit();
 		$(this).val("");
-		$(this).hide();
-		showItems(1, itemPerPage);
+		$(this).parent().parent().fadeOut("slow", function() {            
+            showItems(1, itemPerPage);
+        });
 	}
 });
